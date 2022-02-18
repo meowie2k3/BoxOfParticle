@@ -18,7 +18,7 @@ class box : public particle{
      int width;
      int height;
      vector<particle*> list;
-     bool draw[1000][1000];
+     bool draw[100][100];
     public:
         box(int width, int height) : particle(){
             this->width=width;
@@ -150,6 +150,14 @@ class box : public particle{
             return false;
         }
         void visualize(){
+            memset(draw, false, sizeof(draw));
+            for(int i=0;i<list.size();i++){
+                int x= list[i]->getX();
+                int y= list[i]->getY();
+                if(draw[x][y]==false){
+                    draw[x][y]=true;
+                }
+            }
             for(int i=0;i<=height+2;i++)
                 cout << "-";
             cout << '\n';
@@ -167,5 +175,14 @@ class box : public particle{
             for(int i=0;i<=height+2;i++)
                 cout << "-";
             cout << '\n';
+        }
+        bool isFull(){
+            for(int i=0;i<width;i++){
+                for(int j=0;j<height;j++){
+                    if(draw[i][j]==false)
+                        return false;
+                }
+            }
+            return true;
         }
 };

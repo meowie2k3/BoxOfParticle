@@ -81,25 +81,48 @@ int main(){
     box* box1 = new box(width, height);
     //cout << box1->getWidth() << " " << box1->getHeight();
 
-    srand((unsigned) time(0));//initial seed value to system clock
+    srand((unsigned) time(0)); //initial seed value to system clock
+
     cout << "Generating 3 particle:\n";
     for(int i=0;i<3;i++){
+        if(box1->isFull()==true){
+                cout << "Box is full!! Stopping program\n";
+                box1->visualize();
+                //system("PAUSE");
+                return 0;
+            }
+        while(box1->isCollide()==true){
+            if(box1->isFull()==true){
+                cout << "Box is full!! Stopping program\n";
+                box1->visualize();
+                //system("PAUSE");
+                return 0;
+            }
+            int x1= rand() % width;
+            int y1= rand() % height;
+            cout << "Collision detected! Adding particle at [" << x1 << "," << y1 << "]\n";
+            box1->addParticle(x1,y1);
+        }
+        
         box1->addParticle(randomNUm()%width, randomNUm()%height);
     }
     //box1->printPos(1); 
 
     box1->printAll();
-    while(box1->isCollide()==true){
-            int x1= rand() % width;
-            int y1= rand() % height;
-            cout << "Collision detected! Adding particle at [" << x1 << "," << y1 << "]\n";
-        }
+
     box1->visualize();
+    
     int moves;
     cout << "insert number of moves: ";
     cin >> moves;
     for(int z=0;z<moves;z++)
     {
+        if(box1->isFull()==true){
+                cout << "Box is full!! Stopping program\n";
+                box1->visualize();
+                //system("PAUSE");
+                return 0;
+            }
         cout << "Move number " << z+1 << ":\n";
         int direction=randomNUm() % 8;
         int particleChosen= randomNUm() % box1->getListsize();
@@ -107,14 +130,24 @@ int main(){
         box1->move(direction, particleChosen);
         box1->printAll();
         if(box1->isCollide()==true){
+            if(box1->isFull()==true){
+                cout << "Box is full!! Stopping program\n";
+                box1->visualize();
+                //system("PAUSE");
+                return 0;
+            }
             int x1= rand() % width;
             int y1= rand() % height;
+
             cout << " Collision detected! Adding particle at [" << x1 << "," << y1 << "] and restart this move.\n";
             box1->addParticle(x1,y1);
+
+            box1->visualize();
             z--;
             continue;
         }
         else box1->visualize();
     }
-    system("PAUSE");
+    //system("PAUSE");
+    return 0;
 }
